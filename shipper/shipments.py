@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import gzip
+import io
 import math
+import wave
 from bitarray import bitarray
 from PIL import Image
 from .exceptions import LoadingError, UnloadingError
@@ -204,3 +205,25 @@ class LosslessImageShipment(BinaryShipment):
     def _set_pallet_spots(self, spots):
         self.container = Image.frombytes('RGB', self.container.size,
                                          bytes(spots))
+
+
+class WaveShipment(BinaryShipment):
+    """This shipment uses a WAVE audio file as a container"""
+
+    def __init__(self, container):
+        self.container = container
+        with wave.open(container, 'rb') as f:
+            self._params = f.getparams()
+            self._nframes = f.getnframes()
+            self._rawframes = f.readframes(self._nframes)
+
+    def ship(self, destination):
+        with wave.open(destination, 'wb') as f:
+            f.setparams(self._params)
+            f.writeframesraw(self._rawframes)
+
+    def _get_pallet_spots(self):
+        return bytearray(self._rawframes)
+
+    def _set_pallet_spots(self, spots):
+        self._rawframes = bytes(spots)

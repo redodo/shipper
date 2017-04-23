@@ -65,11 +65,5 @@ def unload(container, destination, unlock):
     destination.write(cargo)
 
 
-@cli.command()
-@click.option('--test', default=False, type=str)
-def test(test):
-    print(test)
-
-
 if __name__ == '__main__':
     cli()
