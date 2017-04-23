@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import io
 import math
 import wave
 from bitarray import bitarray
