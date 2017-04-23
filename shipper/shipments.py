@@ -16,7 +16,7 @@ class BaseShipment(object):
     #: The ratio of pallets to bytes
     PALLETS_PER_BYTE = None
 
-    #: The default packer used in loading and unloading the cargo
+    #: The default picker used in loading and unloading the cargo
     DEFAULT_PICKER = LinearPicker
 
     def __init__(self, container):
