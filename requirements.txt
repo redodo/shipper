@@ -1,0 +1,4 @@
+bitarray==0.8.1
+click==6.7
+olefile==0.44
+Pillow==4.1.0
