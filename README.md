@@ -4,6 +4,12 @@
 
 *Ship cargo in containers.*
 
+Installation:
+
+```bash
+pip install -e git+https://github.com/redodo/shipper.git
+```
+
 Example usage:
 
 ```bash
