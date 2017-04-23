@@ -4,6 +4,7 @@ import getpass
 import hashlib
 import simplecrypt
 import sys
+from .helpers import prompt_password
 from .pickers import RandomPicker
 from .shipments import LosslessImageShipment
 
@@ -32,11 +33,7 @@ def load(container, destination, cargo, lock):
     cargo = cargo.read()
 
     if lock:
-        while True:
-            password = getpass.getpass('Password: ')
-            if getpass.getpass('Repeat for confirmation: ') == password:
-                break
-            print('Confirmation did not match the password')
+        password = prompt_password(confirm=True)
         seed = hashlib.sha512(password.encode('utf-8')).hexdigest()
         cargo = simplecrypt.encrypt(password, cargo)
         del password
@@ -55,7 +52,7 @@ def unload(container, destination, unlock):
     seed = DEFAULT_SEED
 
     if unlock:
-        password = getpass.getpass('Password: ')
+        password = prompt_password()
         seed = hashlib.sha512(password.encode('utf-8')).hexdigest()
 
     shipment = LosslessImageShipment(container)

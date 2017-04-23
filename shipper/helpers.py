@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import getpass
 import random
 
 
@@ -26,3 +27,11 @@ class RandomSeed(object):
 
     def __exit__(self, type, value, traceback):
         random.setstate(self.__original_state)
+
+
+def prompt_password(confirm=False):
+    while True:
+        password = getpass.getpass('Password: ')
+        if not confirm or getpass.getpass('Confirmation: ') == password:
+            return password
+        print('Confirmation did not match the password')
