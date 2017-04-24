@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-import click
 import getpass
 import hashlib
-import simplecrypt
 import sys
+
+import click
+import simplecrypt
+
 from .helpers import prompt_password
 from .pickers import RandomPicker
 from .shipments import LosslessImageShipment, WaveShipment

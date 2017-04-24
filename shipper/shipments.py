@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import math
 import wave
+
 from bitarray import bitarray
 from PIL import Image
+
 from .exceptions import LoadingError, UnloadingError
 from .pickers import LinearPicker
 
