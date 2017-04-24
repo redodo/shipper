@@ -23,7 +23,7 @@ Hello World
 The cargo that is loaded in the container can be secured using the `--lock`
 parameter in the CLI. You will be prompted a password.
 
-    shipper load --cargo data.txt example.png shipment.png --lock
+    shipper load --cargo data.txt example.png --lock > shipment.png
 
 Unloading secured cargo can be done by passing the `--unlock` parameter:
 
