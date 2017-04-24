@@ -2,6 +2,8 @@
 import getpass
 import random
 
+import click
+
 
 class RandomSeed(object):
     """Creates a context with a temporarily used seed for the random
@@ -34,4 +36,5 @@ def prompt_password(confirm=False):
         password = getpass.getpass('Password: ')
         if not confirm or getpass.getpass('Confirmation: ') == password:
             return password
-        print('Confirmation did not match the password')
+        click.secho('Confirmation did not match password. Try again.',
+                    err=True, fg='red')
