@@ -45,6 +45,6 @@ Unloading the shipment is the reverse of that process:
 3. Put the cargo back together
 
 While the standard implementation of this package only delivers support for two
-types of contains; lossless image containers and WAVE audio file containers, it
-is jolly straight forward to create implementations for other types of
+types of containers; lossless image containers and WAVE audio file containers,
+it is jolly straight forward to create implementations for other types of
 containers.
