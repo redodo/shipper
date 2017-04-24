@@ -199,10 +199,7 @@ class LosslessImageShipment(BinaryShipment):
     )
 
     def __init__(self, container):
-        if isinstance(container, Image.Image):
-            self.container = container
-        else:
-            self.container = Image.open(container)
+        self.container = Image.open(container)
 
     def ship(self, destination):
         self.container.save(destination, 'PNG')
@@ -230,7 +227,7 @@ class WaveShipment(BinaryShipment):
             self._rawframes = f.readframes(self._nframes)
 
     def ship(self, destination):
-        with wave.open(destination) as f:
+        with wave.open(destination, 'wb') as f:
             f.setparams(self._params)
             f.writeframesraw(self._rawframes)
 

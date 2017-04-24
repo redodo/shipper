@@ -16,12 +16,19 @@ def shipment(container, t=None):
     :param container: the file pointer of the container
     :param t: optional overwrite of the container type
     """
-    try:
-        t = t.lower() if t else container.name.split('.').pop().lower()
-    except AttributeError:
-        raise ShipmentError('Could not determine the container type. Please '
-                            'pass the `t` parameter to this function.')
+    if t is None:
+        try:
+            if isinstance(container, str):
+                filename = container
+            else:
+                filename = container.name
+            t = filename.split('.').pop()
+        except AttributeError:
+            raise ShipmentError('Could not determine the container type. '
+                                'Please pass the `t` parameter to this '
+                                'function.')
 
+    t = t.lower()
     for method in SHIPMENT_METHODS:
         if t in method.CONTAINER_TYPES:
             return method(container)
