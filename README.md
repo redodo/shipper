@@ -18,6 +18,16 @@ $ shipper unload shipment.png
 Hello World
 ```
 
+Or in Python code:
+
+```python
+import shipper
+
+shipment = shipper.shipment('example.png')
+shipment.load(b'cargo')
+shipment.ship('shipment.png')
+```
+
 ## Securing The Cargo
 
 The cargo that is loaded in the container can be secured using the `--lock`
