@@ -4,3 +4,4 @@ from .exceptions import ShipmentError, LoadingError, UnloadingError
 from .pickers import LinearPicker, RandomPicker
 from .shipments import BaseShipment, BinaryShipment, LosslessImageShipment, \
     WaveShipment
+from .sugar import shipment

@@ -5,28 +5,14 @@ import sys
 import click
 import simplecrypt
 
+from . import sugar
 from .exceptions import ShipmentError
 from .helpers import prompt_password
 from .pickers import RandomPicker
-from .shipments import LosslessImageShipment, WaveShipment
 
 
 #: The default seed used for the RandomPicker
 DEFAULT_SEED = 7
-
-
-CARGO_TYPES = {
-    'jpg': LosslessImageShipment,
-    'bmp': LosslessImageShipment,
-    'png': LosslessImageShipment,
-    'wav': WaveShipment,
-}
-
-
-def get_shipment_method(container):
-    for cargo_type, shipment in CARGO_TYPES.items():
-        if container.lower().endswith('.{}'.format(cargo_type)):
-            return shipment
 
 
 @click.group()
@@ -51,7 +37,7 @@ def cli():
               help='put a lock on the cargo to secure it')
 def load(container, cargo, destination, lock):
     """Load a container with cargo."""
-    shipment_method = get_shipment_method(container)
+    shipment = sugar.shipment(container)
     seed = DEFAULT_SEED
     cargo = cargo.read()
 
@@ -61,7 +47,6 @@ def load(container, cargo, destination, lock):
         cargo = simplecrypt.encrypt(password, cargo)
         del password
 
-    shipment = shipment_method(container)
     try:
         shipment.load(cargo, picker=RandomPicker(seed))
     except ShipmentError as e:
@@ -79,14 +64,13 @@ def load(container, cargo, destination, lock):
               help='unlock secured cargo')
 def unload(container, destination, unlock):
     """Unload cargo from a container."""
-    shipment_method = get_shipment_method(container)
+    shipment = sugar.shipment(container)
     seed = DEFAULT_SEED
 
     if unlock:
         password = prompt_password()
         seed = hashlib.sha512(password.encode('utf-8')).hexdigest()
 
-    shipment = shipment_method(container)
     try:
         cargo = shipment.unload(picker=RandomPicker(seed))
     except ShipmentError as e:

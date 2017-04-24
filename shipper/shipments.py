@@ -21,6 +21,9 @@ class BaseShipment(object):
     #: The default picker used in loading and unloading the cargo
     DEFAULT_PICKER = LinearPicker
 
+    #: The types of containers this shipments supports
+    CONTAINER_TYPES = ()
+
     def __init__(self, container):
         self.container = container
 
@@ -36,8 +39,8 @@ class BaseShipment(object):
         pallets = self._palletize_cargo(shipping_bill) + pallets
 
         if len(pallets) > len(spots):
-            raise LoadingError('there are too much pallets and not enough '
-                               'spots')
+            raise LoadingError('There are too much pallets and not enough '
+                               'spots.')
 
         # load the pallets onto the spots
         for location, pallet in picker.iterate(spots, pallets):
@@ -55,10 +58,10 @@ class BaseShipment(object):
 
         size = self._parse_shipping_bill(spots, locations)
         if size > len(spots):
-            raise UnloadingError('it appears that there is no cargo in '
+            raise UnloadingError('It appears that there is no cargo in '
                                  'this container as the supposed number '
                                  'of pallets exceed the number of '
-                                 'available spots')
+                                 'available spots.')
 
         pallets = []
         while len(pallets) < size:
@@ -191,6 +194,10 @@ class BinaryShipment(BaseShipment):
 class LosslessImageShipment(BinaryShipment):
     """This shipment uses a lossless image as a container"""
 
+    CONTAINER_TYPES = (
+        'bmp', 'gif', 'jpe', 'jpeg', 'jpg', 'png',
+    )
+
     def __init__(self, container):
         if isinstance(container, Image.Image):
             self.container = container
@@ -210,6 +217,10 @@ class LosslessImageShipment(BinaryShipment):
 
 class WaveShipment(BinaryShipment):
     """This shipment uses a WAVE audio file as a container"""
+
+    CONTAINER_TYPES = (
+        'wav',
+    )
 
     def __init__(self, container):
         self.container = container
