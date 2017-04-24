@@ -6,6 +6,7 @@ import sys
 import click
 import simplecrypt
 
+from .exceptions import ShipmentError
 from .helpers import prompt_password
 from .pickers import RandomPicker
 from .shipments import LosslessImageShipment, WaveShipment
@@ -49,7 +50,10 @@ def load(container, destination, cargo, lock):
         del password
 
     shipment = shipment_method(container)
-    shipment.load(cargo, picker=RandomPicker(seed))
+    try:
+        shipment.load(cargo, picker=RandomPicker(seed))
+    except ShipmentError as e:
+        raise click.ClickException(e)
     shipment.ship(destination)
 
 
@@ -67,7 +71,10 @@ def unload(container, destination, unlock):
         seed = hashlib.sha512(password.encode('utf-8')).hexdigest()
 
     shipment = shipment_method(container)
-    cargo = shipment.unload(picker=RandomPicker(seed))
+    try:
+        cargo = shipment.unload(picker=RandomPicker(seed))
+    except ShipmentError as e:
+        raise click.ClickException(e)
 
     if unlock:
         cargo = simplecrypt.decrypt(password, cargo)

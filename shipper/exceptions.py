@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
-class CarrierError(Exception):
+class ShipmentError(Exception):
     pass
 
 
-class LoadingError(CarrierError):
+class LoadingError(ShipmentError):
     pass
 
 
-class UnloadingError(CarrierError):
+class UnloadingError(ShipmentError):
     pass
