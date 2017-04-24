@@ -17,6 +17,8 @@ DEFAULT_SEED = 7
 
 
 CARGO_TYPES = {
+    'jpg': LosslessImageShipment,
+    'bmp': LosslessImageShipment,
     'png': LosslessImageShipment,
     'wav': WaveShipment,
 }
@@ -30,16 +32,26 @@ def get_shipment_method(container):
 
 @click.group()
 def cli():
-    pass
+    """Ship cargo in different types of containers.
+
+    All image types are supported as a container input.  The output,
+    however, will always be PNG when an image is used as input.
+
+    WAVE audio files can also be used as a container.
+    """
 
 
 @cli.command()
 @click.argument('container', type=click.Path(exists=True))
+@click.option('--cargo', '-c', type=click.File('rb'), default=sys.stdin.buffer,
+              help='the cargo to load into the container (stdin by default)')
 @click.option('--destination', '-d', type=click.File(),
-              default=sys.stdout.buffer)
-@click.option('--cargo', '-c', type=click.File('rb'), default=sys.stdin.buffer)
-@click.option('--lock', '-l', is_flag=True, default=False)
-def load(container, destination, cargo, lock):
+              default=sys.stdout.buffer,
+              help='ship the container somewhere (stdout by default)')
+@click.option('--lock', '-l', is_flag=True, default=False,
+              help='put a lock on the cargo to secure it')
+def load(container, cargo, destination, lock):
+    """Load a container with cargo."""
     shipment_method = get_shipment_method(container)
     seed = DEFAULT_SEED
     cargo = cargo.read()
@@ -62,9 +74,12 @@ def load(container, destination, cargo, lock):
 @cli.command()
 @click.argument('container', type=click.Path(exists=True))
 @click.option('--destination', '-d', type=click.File(),
-              default=sys.stdout.buffer)
-@click.option('--unlock', '-l', is_flag=True, default=False)
+              default=sys.stdout.buffer,
+              help='where to put the cargo (stdout by default)')
+@click.option('--unlock', '-l', is_flag=True, default=False,
+              help='unlock secured cargo')
 def unload(container, destination, unlock):
+    """Unload cargo from a container."""
     shipment_method = get_shipment_method(container)
     seed = DEFAULT_SEED
 
