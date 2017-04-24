@@ -198,7 +198,7 @@ class LosslessImageShipment(BinaryShipment):
             self.container = Image.open(container)
 
     def ship(self, destination):
-        self.container.save(destination)
+        self.container.save(destination, 'PNG')
 
     def _get_pallet_spots(self):
         return bytearray(self.container.tobytes())
@@ -219,7 +219,7 @@ class WaveShipment(BinaryShipment):
             self._rawframes = f.readframes(self._nframes)
 
     def ship(self, destination):
-        with wave.open(destination, 'wb') as f:
+        with wave.open(destination) as f:
             f.setparams(self._params)
             f.writeframesraw(self._rawframes)
 

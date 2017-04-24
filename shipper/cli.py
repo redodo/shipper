@@ -35,7 +35,8 @@ def cli():
 
 @cli.command()
 @click.argument('container', type=click.Path(exists=True))
-@click.argument('destination', type=click.Path())
+@click.option('--destination', '-d', type=click.File(),
+              default=sys.stdout.buffer)
 @click.option('--cargo', '-c', type=click.File('rb'), default=sys.stdin.buffer)
 @click.option('--lock', '-l', is_flag=True, default=False)
 def load(container, destination, cargo, lock):
@@ -54,6 +55,7 @@ def load(container, destination, cargo, lock):
         shipment.load(cargo, picker=RandomPicker(seed))
     except ShipmentError as e:
         raise click.ClickException(e)
+
     shipment.ship(destination)
 
 
