@@ -2,3 +2,5 @@ bitarray==0.8.1
 click==6.7
 olefile==0.44
 Pillow==4.1.0
+pycrypto==2.6.1
+simple-crypt==4.1.7
