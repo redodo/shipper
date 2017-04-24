@@ -18,18 +18,18 @@ $ shipper unload shipment.png
 Hello World
 ```
 
-## Securing the cargo
+## Securing The Cargo
 
 The cargo that is loaded in the container can be secured using the `--lock`
 parameter in the CLI. You will be prompted a password.
 
     shipper load --cargo data.txt example.png shipment.png --lock
 
-Unlocking secured cargo works similarly:
+Unloading secured cargo can be done by passing the `--unlock` parameter:
 
     shipper unload shipment.png --unlock
 
-## The shipment process
+## The Shipment Process
 
 The process of preparing a shipment is defined as follows:
 
@@ -43,3 +43,8 @@ Unloading the shipment is the reverse of that process:
 1. Search for the palletized shipping bill (this is actually pretty tedious)
 2. Unload the pallets from the container
 3. Put the cargo back together
+
+While the standard implementation of this package only delivers support for two
+types of contains; lossless image containers and WAVE audio file containers, it
+is jolly straight forward to create implementations for other types of
+containers.
