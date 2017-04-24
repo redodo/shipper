@@ -81,7 +81,3 @@ def unload(container, destination, unlock):
         del password
 
     destination.write(cargo)
-
-
-if __name__ == '__main__':
-    cli()
